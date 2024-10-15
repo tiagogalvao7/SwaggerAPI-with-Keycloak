@@ -1,0 +1,241 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Swagger API with Keycloak Endpoints",
+    "description": "API documentation with Swagger and Keycloak",
+    "version": "1.0.0"
+  },
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Keycloak Endpoints",
+      "description": "Endpoints related to Keycloak operations"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": ["Keycloak Endpoints"],
+        "summary": "Public API",
+        "description": "Public endpoint that returns a welcome message",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/userinfo": {
+      "get": {
+        "tags": ["Keycloak Endpoints"],
+        "summary": "Get user info API",
+        "description": "Keycloak endpoint to get user information",
+        "security": [
+          {
+            "oauth2": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Access granted with valid token"
+          },
+          "401": {
+            "description": "Access denied. Invalid or expired token."
+          }
+        }
+      }
+    },
+    "/groups": {
+      "get": {
+        "tags": ["Keycloak Endpoints"],
+        "summary": "Get User Groups",
+        "description": "Returns the groups to which the authenticated user belongs",
+        "security": [
+          {
+            "oauth2": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User groups returned successfully"
+          },
+          "401": {
+            "description": "Access denied. Invalid or expired token."
+          }
+        }
+      }
+    },
+    "/list-groups": {
+      "get": {
+        "tags": ["Keycloak Endpoints"],
+        "summary": "List all groups",
+        "description": "Retrieves a list of all groups in Keycloak",
+        "responses": {
+          "200": {
+            "description": "Groups listed successfully"
+          },
+          "401": {
+            "description": "Access denied. Invalid or expired token."
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": ["Keycloak Endpoints"],
+        "summary": "Create a new user",
+        "description": "Creates a new user in Keycloak",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User object to be created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "required": ["username", "email", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Invalid request body"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Keycloak Endpoints"],
+        "summary": "List all users",
+        "description": "Retrieves a list of all users in Keycloak",
+        "responses": {
+          "200": {
+            "description": "List of users returned successfully"
+          },
+          "401": {
+            "description": "Access denied. Invalid or expired token."
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "put": {
+        "tags": ["Keycloak Endpoints"],
+        "summary": "Update user",
+        "description": "Updates a user in Keycloak",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user to update"
+          },
+          {
+            "name": "user",
+            "in": "body",
+            "description": "Updated user object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User updated successfully"
+          },
+          "400": {
+            "description": "Invalid request body"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Keycloak Endpoints"],
+        "summary": "Delete a user",
+        "description": "Deletes a user in Keycloak by user ID",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user to delete"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/users/{user_id}/groups/{group_id}": {
+      "put": {
+        "tags": ["Keycloak Endpoints"],
+        "summary": "Add user to a group",
+        "description": "Adds a user to a specific group in Keycloak",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user to add to the group"
+          },
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the group"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User added to group successfully"
+          },
+          "404": {
+            "description": "User or group not found"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "oauth2": {
+      "type": "oauth2",
+      "authorizationUrl": "http://localhost:8080/realms/master/protocol/openid-connect/auth",
+      "tokenUrl": "http://localhost:8080/realms/master/protocol/openid-connect/token",
+      "flow": "accessCode",
+      "scopes": {
+        "openid": "OpenID Connect"
+      }
+    }
+  }
+}

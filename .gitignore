@@ -1,0 +1,9 @@
+# Ignore PostgreSQL data files
+keycloak-docker/postgres-data/
+
+# Ignore data and files from Keycloak
+keycloak-docker/keycloak-data/
+
+# Ignore temporary files or cache
+*.log
+*.tmp
