@@ -35,3 +35,23 @@ This project is a **REST API** that integrates **Keycloak** with **Swagger** to 
    ```bash
    git clone <REPOSITORY_URL>
    ```
+
+2. **Start Keycloak and PostgreSQL Docker containers**:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Run the Flask API**:
+
+   ```bash
+   python app.py
+   ```
+
+4. **Access the API documentation via Swagger**:
+
+   Open your browser and go to:
+
+   ```bash
+   http://localhost:5000/swagger
+   ```
